@@ -1,0 +1,49 @@
+package com.sbu.intl.contoller;
+
+import com.sbu.intl.model.User;
+import com.sbu.intl.service.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@CrossOrigin(origins="http://localhost:4200") // Tell spring boot to get request from 4200
+public class UserController {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @PostMapping(path="/users")
+    public ResponseEntity<Void> addUser(@RequestBody User user) {
+        userRepository.save(user);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(path="/users/{id}")
+    public ResponseEntity<Void> updateUser(@RequestBody User user, @PathVariable("id") Long id) {
+        User retrieved = userRepository.getById(id);
+        if (retrieved != null)
+            userRepository.save(user);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping(path = "/users/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@PathVariable("id") Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @GetMapping(path="/users")
+    public Iterable<User> getUsers() {
+        return userRepository.findAll();
+    }
+
+    @GetMapping(path="/users/{id}")
+    public User getUser(@PathVariable("id") Long id) {
+        return userRepository.getById(id);
+    }
+
+}
