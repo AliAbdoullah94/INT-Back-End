@@ -2,12 +2,12 @@ package com.sbu.intl.contoller;
 
 import com.sbu.intl.model.User;
 import com.sbu.intl.service.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200") // Tell spring boot to get request from 4200
@@ -24,8 +24,8 @@ public class UserController {
 
     @PutMapping(path="/users/{id}")
     public ResponseEntity<Void> updateUser(@RequestBody User user, @PathVariable("id") Long id) {
-        User retrieved = userRepository.getById(id);
-        if (retrieved != null)
+        Optional<User> retrieved = userRepository.findById(id);
+        if (retrieved.isPresent())
             userRepository.save(user);
         return ResponseEntity.noContent().build();
     }
@@ -42,8 +42,8 @@ public class UserController {
     }
 
     @GetMapping(path="/users/{id}")
-    public User getUser(@PathVariable("id") Long id) {
-        return userRepository.getById(id);
+    public Optional<User> getUser(@PathVariable("id") Long id) {
+        return userRepository.findById(id);
     }
 
 }

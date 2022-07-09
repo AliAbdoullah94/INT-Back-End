@@ -9,8 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+@Entity
+@NoArgsConstructor
 public class Student extends User {
 
+    //TODO: Handling ST_ID
     private long st_ID;
     private String section;
     private String degree;

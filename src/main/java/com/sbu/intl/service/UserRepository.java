@@ -1,17 +1,14 @@
 package com.sbu.intl.service;
 
 import com.sbu.intl.model.User;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
+@Primary
+public interface UserRepository<T extends User> extends CrudRepository<T, Long> {
 
-
-    User findByEmail(String email);
-
-    User getById(long id);
+    T findByEmail(String email);
 }
 
