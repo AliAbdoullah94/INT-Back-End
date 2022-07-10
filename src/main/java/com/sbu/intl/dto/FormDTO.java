@@ -1,21 +1,18 @@
-package com.sbu.intl.model;
+package com.sbu.intl.dto;
 
+import com.sbu.intl.model.Applicant;
+import com.sbu.intl.model.Response;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@NoArgsConstructor
-public class Form {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+public class FormDTO {
+
     private Long id;
 
-    @ManyToOne
-    private Applicant applicant;
-    @OneToOne
+    private Long applicant;
+
     private Response response;
     private String applyFor;
     private Date dateCreated;
@@ -31,18 +28,18 @@ public class Form {
 
 
 
-    public Form(Applicant applicant, String applyFor, Date dateCreated, String notes) {
+    public FormDTO(Long applicant, String applyFor, Date dateCreated, String notes) {
         this.applicant = applicant;
         this.applyFor = applyFor;
         this.dateCreated = dateCreated;
         this.notes = notes;
     }
 
-    public Applicant getApplicant() {
+    public Long getApplicant() {
         return applicant;
     }
 
-    public void setApplicant(Applicant applicant) {
+    public void setApplicant(Long applicant) {
         this.applicant = applicant;
     }
 

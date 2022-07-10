@@ -16,7 +16,12 @@ public class Applicant extends User {
     private Gender gender;
     private String nationality;
 
-//    public Applicant(String email, String password, Form form, Date date, Gender gender, String nationality) {
+    public Applicant(String email, String password, String nationality) {
+        super(email, password);
+        this.nationality = nationality;
+    }
+
+    //    public Applicant(String email, String password, Form form, Date date, Gender gender, String nationality) {
 //        super(email, password);
 //        this.form = form;
 //        this.date = date;
