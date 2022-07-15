@@ -1,10 +1,8 @@
 package com.sbu.intl.dto;
 
-import com.sbu.intl.model.Applicant;
-import com.sbu.intl.model.Response;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import com.sbu.intl.model.Response;
+
 import java.util.Date;
 
 public class FormDTO {

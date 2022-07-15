@@ -22,15 +22,23 @@ public class FormController {
     @Autowired
     private ApplicantRepository applicantRepository;
 
+    //    @PostMapping(path = "/forms")
+//    public ResponseEntity<Void> addForm(@RequestBody FormDTO formDTO) {
+//        Applicant applicant = Optional.ofNullable(formDTO.getApplicant())
+//                .flatMap(id -> applicantRepository.findById(id))
+//                .orElseThrow(()-> new IllegalArgumentException("Form applicant shouldn't be null"));
+//        Form formEntity = new Form(applicant,formDTO.getApplyFor(), formDTO.getDateCreated(), formDTO.getNotes());
+//        formRepository.save(formEntity);
+//        return ResponseEntity.noContent().build();
+//    }
     @PostMapping(path = "/forms")
-    public ResponseEntity<Void> addForm(@RequestBody FormDTO formDTO) {
-        Applicant applicant = Optional.ofNullable(formDTO.getApplicant())
-                .flatMap(id -> applicantRepository.findById(id))
-                .orElseThrow(()-> new IllegalArgumentException("Form applicant shouldn't be null"));
-        Form formEntity = new Form(applicant,formDTO.getApplyFor(), formDTO.getDateCreated(), formDTO.getNotes());
+    public ResponseEntity<Void> addForm(@RequestBody Form form) {
+        Applicant applicant = applicantRepository.findByEmail(form.getApplicant().getEmail());
+        Form formEntity = new Form(applicant, form.getApplyFor(), form.getDateCreated(), form.getAboutApplicant());
         formRepository.save(formEntity);
         return ResponseEntity.noContent().build();
     }
+
 
     @PutMapping(path = "/forms/{id}")
     public ResponseEntity<Void> updateForm(@RequestBody Form form, @PathVariable("id") Long id) {
