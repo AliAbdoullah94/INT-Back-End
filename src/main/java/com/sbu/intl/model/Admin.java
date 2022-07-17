@@ -1,35 +1,33 @@
 package com.sbu.intl.model;
 
-import com.sbu.intl.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
+@Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-public class Admin extends User {
+public class Admin {
+    @Id
+    @GeneratedValue
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    private String email;
+    private String password;
+    private String firstName;
+    private String lastName;
+
     private String position;
     private String mobileNum;
 
-    public Admin(String email, String password, String position, String mobileNum) {
-        super(email, password);
-        this.position = position;
-        this.mobileNum = mobileNum;
-    }
 
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getMobileNum() {
-        return mobileNum;
-    }
-
-    public void setMobileNum(String mobileNum) {
-        this.mobileNum = mobileNum;
-    }
 }

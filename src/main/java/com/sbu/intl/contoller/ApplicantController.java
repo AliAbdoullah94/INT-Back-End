@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200") // Tell spring boot to get request from 4200
+@CrossOrigin(origins="http://localhost:4200")
 public class ApplicantController {
 
     @Autowired
@@ -22,11 +22,14 @@ public class ApplicantController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(path = "/applicants/{id}")
-    public ResponseEntity<Void> updateApplicant(@RequestBody Applicant applicant, @PathVariable("id") Long id) {
-        Optional<Applicant> retrieved = applicantRepository.findById(id);
-        if (retrieved != null)
-            applicantRepository.save(applicant);
+    @PutMapping(path = "/applicants/{email}")
+    public ResponseEntity<Void> updateApplicant(@RequestBody Applicant applicant, @PathVariable("email") String email) {
+//        Optional<Applicant> retrieved = Optional.ofNullable(applicantRepository.findByEmail(email));
+        Applicant retrieved = applicantRepository.findByEmail(email);
+        retrieved.update(applicant);
+//        if (retrieved.isPresent())
+//            applicantRepository.save(applicant);
+        applicantRepository.save(retrieved);
         return ResponseEntity.noContent().build();
     }
 

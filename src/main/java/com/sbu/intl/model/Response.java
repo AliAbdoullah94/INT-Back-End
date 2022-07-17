@@ -1,10 +1,16 @@
 package com.sbu.intl.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Response {
     @Id
@@ -13,7 +19,7 @@ public class Response {
     private Long id;
 
     @ManyToOne
-    private User creator;
+    private Admin creator;
     @OneToOne
     private Form onForm;
     @OneToOne
@@ -21,59 +27,4 @@ public class Response {
     private boolean accepted;
     private String responseText;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Response(User creator, Form onForm, Applicant applicant, boolean accepted, String responseText) {
-        this.creator = creator;
-        this.onForm = onForm;
-        this.applicant = applicant;
-        this.accepted = accepted;
-        this.responseText = responseText;
-    }
-
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
-
-    public Form getOnForm() {
-        return onForm;
-    }
-
-    public void setOnForm(Form onForm) {
-        this.onForm = onForm;
-    }
-
-    public Applicant getApplicant() {
-        return applicant;
-    }
-
-    public void setApplicant(Applicant applicant) {
-        this.applicant = applicant;
-    }
-
-    public boolean isAccepted() {
-        return accepted;
-    }
-
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
-    }
-
-    public String getResponseText() {
-        return responseText;
-    }
-
-    public void setResponseText(String responseText) {
-        this.responseText = responseText;
-    }
 }
