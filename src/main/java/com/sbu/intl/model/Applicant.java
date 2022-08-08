@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Builder
@@ -35,6 +36,15 @@ public class Applicant {
     private String job;
     private String aboutApplicant;
 
+    //Second Form Page
+//    private String address;
+//    private String city;
+//    private String mobile;
+//    private String phone;
+//    private boolean hasMedicalCondition;
+//    private List<String> medicalConditions;
+//    private List<String> hearAboutUsWays;
+
     public Applicant(String email, String password, String firstName, String lastName) {
         this.email = email;
         this.password = password;
@@ -47,7 +57,7 @@ public class Applicant {
         this.setGender(applicant.getGender());
         this.setNationality(applicant.getNationality());
         this.setDegree(applicant.getDegree());
-        this.setApplyFor(applicant.getAboutApplicant());
+        this.setApplyFor(applicant.getApplyFor());
         this.setJob(applicant.getJob());
         this.setAboutApplicant(applicant.getAboutApplicant());
     }
