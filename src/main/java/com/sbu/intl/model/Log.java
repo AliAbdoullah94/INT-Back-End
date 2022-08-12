@@ -1,13 +1,18 @@
 package com.sbu.intl.model;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
-@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@Builder
 @AllArgsConstructor
 public class Log {
     @Id
@@ -26,73 +31,34 @@ public class Log {
     private Form form;
 
     @ManyToOne
-    private Admin admin;
-
-    @ManyToOne
     private Response response;
 
-    //SignUp and LogIn Constructor
+    //SignUp Log Constructor
     public Log(String logType, Applicant applicant, Date dateCreated) {
         this.logType = logType;
         this.applicant = applicant;
         this.dateCreated = dateCreated;
     }
 
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogType() {
-        return logType;
-    }
-
-    public void setLogType(String logType) {
+    //Apply Log Constructor
+    public Log(String logType, Applicant applicant, Form form, Date dateCreated) {
         this.logType = logType;
-    }
-
-    public Applicant getApplicant() {
-        return applicant;
-    }
-
-    public void setApplicant(Applicant applicant) {
         this.applicant = applicant;
-    }
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
+        this.form = form;
         this.dateCreated = dateCreated;
     }
 
-    public Form getForm() {
-        return form;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Log log = (Log) o;
+        return id != null && Objects.equals(id, log.id);
     }
 
-    public void setForm(Form form) {
-        this.form = form;
-    }
-
-    public Admin getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
-    }
-
-    public Response getResponse() {
-        return response;
-    }
-
-    public void setResponse(Response response) {
-        this.response = response;
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

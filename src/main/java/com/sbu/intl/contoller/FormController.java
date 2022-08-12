@@ -35,10 +35,8 @@ public class FormController {
     public ResponseEntity<Void> addForm(@RequestBody Form form) {
         Applicant applicant = applicantRepository.findByEmail(form.getApplicant().getEmail());
         Form retrievedForm = formRepository.findByApplicant(applicant);
-        if (retrievedForm != null){
-            formRepository.delete(retrievedForm);
-        }
         Form formEntity = new Form(applicant, form.getApplyFor(), form.getDateCreated(), form.getAboutApplicant());
+        formEntity.setId(retrievedForm.getId());
         formRepository.save(formEntity);
         return ResponseEntity.noContent().build();
     }

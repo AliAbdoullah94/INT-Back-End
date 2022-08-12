@@ -1,6 +1,10 @@
 package com.sbu.intl.contoller;
 
+import com.sbu.intl.model.Applicant;
+import com.sbu.intl.model.Form;
 import com.sbu.intl.model.Response;
+import com.sbu.intl.service.ApplicantRepository;
+import com.sbu.intl.service.FormRepository;
 import com.sbu.intl.service.ResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,17 +20,34 @@ public class ResponseController {
     @Autowired
     private ResponseRepository responseRepository;
 
-    @PostMapping(path="/responses")
-    public ResponseEntity<Void> addResponse(@RequestBody Response response) {
+    @Autowired
+    private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private FormRepository formRepository;
+
+    @PostMapping(path="/responses/{applicantEmail}")
+    public ResponseEntity<Void> addResponse(@RequestBody Response response, @PathVariable("applicantEmail") String applicantEmail) {
+        Applicant applicant = applicantRepository.findByEmail(applicantEmail);
+        Form retrievedForm = formRepository.findByApplicant(applicant);
+//        Optional<Response> retrievedResponse = Optional.ofNullable(responseRepository.findByApplicant(applicant));
+//        if (retrievedResponse.isPresent())
+//            responseRepository.save(response);
+        response.setApplicant(applicant);
+        response.setOnForm(retrievedForm);
         responseRepository.save(response);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(path="/responses/{id}")
-    public ResponseEntity<Void> updateResponse(@RequestBody Response response, @PathVariable("id") Long id) {
+    public ResponseEntity<Void> updateResponse(@RequestBody Response response, @PathVariable("id") long id) {
         Optional<Response> retrieved = responseRepository.findById(id);
-        if (retrieved.isPresent())
-            responseRepository.save(response);
+        if (retrieved.isPresent()){
+            retrieved.orElseThrow().setResponseText(response.getResponseText());
+            retrieved.orElseThrow().setAccepted(response.isAccepted());
+            responseRepository.save(retrieved.get());
+        }
+
         return ResponseEntity.noContent().build();
     }
 
