@@ -36,7 +36,8 @@ public class FormController {
         Applicant applicant = applicantRepository.findByEmail(form.getApplicant().getEmail());
         Form retrievedForm = formRepository.findByApplicant(applicant);
         Form formEntity = new Form(applicant, form.getApplyFor(), form.getDateCreated(), form.getAboutApplicant());
-        formEntity.setId(retrievedForm.getId());
+        if (retrievedForm != null)
+            formEntity.setId(retrievedForm.getId());
         formRepository.save(formEntity);
         return ResponseEntity.noContent().build();
     }

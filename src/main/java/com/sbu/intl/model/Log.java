@@ -48,6 +48,14 @@ public class Log {
         this.dateCreated = dateCreated;
     }
 
+    //Response Log Constructor
+    public Log(String logType, Applicant applicant, Response form, Date dateCreated) {
+        this.logType = logType;
+        this.applicant = applicant;
+        this.response = response;
+        this.dateCreated = dateCreated;
+    }
+
 
     @Override
     public boolean equals(Object o) {

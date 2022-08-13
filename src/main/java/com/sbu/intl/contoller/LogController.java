@@ -3,9 +3,11 @@ package com.sbu.intl.contoller;
 import com.sbu.intl.model.Applicant;
 import com.sbu.intl.model.Form;
 import com.sbu.intl.model.Log;
+import com.sbu.intl.model.Response;
 import com.sbu.intl.service.ApplicantRepository;
 import com.sbu.intl.service.FormRepository;
 import com.sbu.intl.service.LogRepository;
+import com.sbu.intl.service.ResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,9 @@ public class LogController {
 
     @Autowired
     private FormRepository formRepository;
+
+    @Autowired
+    private ResponseRepository responseRepository;
     
     @PostMapping(path = "/logs/{type}")
     public ResponseEntity<Void> addLog(@RequestBody Log log, @PathVariable("type") String type) {
@@ -38,8 +43,16 @@ public class LogController {
             Log logEntity = new Log(log.getLogType(),applicant,form,log.getDateCreated());
             logRepository.save(logEntity);
         }
+        // response
+        else {
+            Applicant applicant = applicantRepository.findByEmail(type);
+            Response response = responseRepository.findByApplicant(applicant);
+            Log logEntity = new Log(log.getLogType(),applicant,response,log.getDateCreated());
+            logRepository.save(logEntity);
+        }
         return ResponseEntity.noContent().build();
     }
+
 
 
     @PutMapping(path = "/logs/{id}")
