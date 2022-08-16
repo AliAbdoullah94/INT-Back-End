@@ -1,5 +1,6 @@
 package com.sbu.intl.contoller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sbu.intl.model.Applicant;
 import com.sbu.intl.service.ApplicantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class ApplicantController {
     }
 
     @PutMapping(path = "/applicants/{email}")
-    public ResponseEntity<Void> updateApplicant(@RequestBody Applicant applicant, @PathVariable("email") String email) {
+    public ResponseEntity<Void> updateApplicant(@RequestBody Applicant applicant, @PathVariable("email") String email) throws JsonProcessingException {
 //        Optional<Applicant> retrieved = Optional.ofNullable(applicantRepository.findByEmail(email));
         Applicant retrieved = applicantRepository.findByEmail(email);
         retrieved.update(applicant);

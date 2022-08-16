@@ -1,18 +1,23 @@
 package com.sbu.intl.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sbu.intl.converters.ListToStringConverter;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class Applicant {
 
     @Id
@@ -28,22 +33,47 @@ public class Applicant {
 
     @OneToOne
     private Form form;
+    //Personal Info
     private Date birth;
-    private String gender;
     private String nationality;
     private String degree;
+    //todo
+//    highSchoolDoc: undefined,
+//    bachelorDoc: undefined,
+//    MasterDoc: undefined,
     private String applyFor;
     private String job;
+    private String gender;
     private String aboutApplicant;
 
-    //Second Form Page
-//    private String address;
-//    private String city;
-//    private String mobile;
-//    private String phone;
-//    private boolean hasMedicalCondition;
-//    private List<String> medicalConditions;
-//    private List<String> hearAboutUsWays;
+    //Contact Details
+    private String address;
+    private String city;
+    private String mobile;
+    private String phone;
+    private boolean hasMedicalCondition;
+    @Column
+    @Convert(converter = ListToStringConverter.class)
+    private List<String> medicalConditions;
+    @Column
+    @Convert(converter = ListToStringConverter.class)
+    private List<String> hearAboutUsWays;
+    //Pass And Visa
+    private String passCountry;
+    private String passNumber;
+    private Date passExpiry;
+    private boolean hasVisa;
+    //todo
+    //passDoc: undefined,
+    private String visaNumber;
+    private Date visaExpiry;
+
+    //Course Selection
+    @Transient
+    private List<Wish> wishList;
+    @Column
+    @Convert(converter = ListToStringConverter.class)
+    private List<String> wishListStr;
 
     public Applicant(String email, String password, String firstName, String lastName) {
         this.email = email;
@@ -52,7 +82,7 @@ public class Applicant {
         this.lastName = lastName;
     }
 
-    public void update(Applicant applicant) {
+    public void update(Applicant applicant) throws JsonProcessingException {
         this.setBirth(applicant.getBirth());
         this.setGender(applicant.getGender());
         this.setNationality(applicant.getNationality());
@@ -60,6 +90,36 @@ public class Applicant {
         this.setApplyFor(applicant.getApplyFor());
         this.setJob(applicant.getJob());
         this.setAboutApplicant(applicant.getAboutApplicant());
+
+        this.setAddress(applicant.getAddress());
+        this.setCity(applicant.getCity());
+        this.setMobile(applicant.getMobile());
+        this.setPhone(applicant.getPhone());
+        this.setHasMedicalCondition(applicant.isHasMedicalCondition());
+        this.setMedicalConditions(applicant.getMedicalConditions());
+        this.setHearAboutUsWays(applicant.getHearAboutUsWays());
+        //Pass And Visa
+        this.setPassCountry(applicant.getPassCountry());
+        this.setPassNumber(applicant.getPassNumber());
+        this.setPassExpiry(applicant.getPassExpiry());
+        this.setHasVisa(applicant.isHasVisa());
+        this.setVisaNumber(applicant.getVisaNumber());
+        this.setVisaExpiry(applicant.getVisaExpiry());
+        //Course Selection
+        this.setWishListStr(processWishList(applicant.getWishList()));
+
+    }
+
+    public List<String> processWishList(List<Wish> wishList) {
+        StringBuilder stringBuilder;
+        List<String> wishes = new ArrayList<>();
+        for (Wish wish : wishList) {
+            stringBuilder = new StringBuilder();
+            stringBuilder.append(wish.getFaculty()).append(": ");
+            stringBuilder.append(wish.getDepartment());
+            wishes.add(stringBuilder.toString());
+        }
+        return wishes;
     }
 
     public Applicant(String email, String password, String firstName, String lastName, Form form, Date birth, String gender, String nationality, String degree, String applyFor, String job, String aboutApplicant) {
@@ -74,107 +134,16 @@ public class Applicant {
         this.aboutApplicant = aboutApplicant;
     }
 
-    public Long getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Applicant applicant = (Applicant) o;
+        return id != null && Objects.equals(id, applicant.id);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Form getForm() {
-        return form;
-    }
-
-    public void setForm(Form form) {
-        this.form = form;
-    }
-
-    public Date getBirth() {
-        return birth;
-    }
-
-    public void setBirth(Date birth) {
-        this.birth = birth;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    public String getDegree() {
-        return degree;
-    }
-
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-
-    public String getApplyFor() {
-        return applyFor;
-    }
-
-    public void setApplyFor(String applyFor) {
-        this.applyFor = applyFor;
-    }
-
-    public String getJob() {
-        return job;
-    }
-
-    public void setJob(String job) {
-        this.job = job;
-    }
-
-    public String getAboutApplicant() {
-        return aboutApplicant;
-    }
-
-    public void setAboutApplicant(String aboutApplicant) {
-        this.aboutApplicant = aboutApplicant;
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

@@ -1,14 +1,18 @@
 package com.sbu.intl.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 public class Form {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,5 +40,18 @@ public class Form {
         this.applyFor = applyFor;
         this.dateCreated = dateCreated;
         this.aboutApplicant = aboutApplicant;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Form form = (Form) o;
+        return id != null && Objects.equals(id, form.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
