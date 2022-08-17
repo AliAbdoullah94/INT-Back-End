@@ -65,6 +65,7 @@ public class Applicant {
     private boolean hasVisa;
     //todo
     //passDoc: undefined,
+    private String visaType;
     private String visaNumber;
     private Date visaExpiry;
 
@@ -103,6 +104,7 @@ public class Applicant {
         this.setPassNumber(applicant.getPassNumber());
         this.setPassExpiry(applicant.getPassExpiry());
         this.setHasVisa(applicant.isHasVisa());
+        this.setVisaType(applicant.getVisaType());
         this.setVisaNumber(applicant.getVisaNumber());
         this.setVisaExpiry(applicant.getVisaExpiry());
         //Course Selection
