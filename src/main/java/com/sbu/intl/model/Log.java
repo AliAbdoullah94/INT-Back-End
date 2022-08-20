@@ -25,31 +25,21 @@ public class Log {
     @ManyToOne
     private Applicant applicant;
 
-    private Date dateCreated;
-
     @ManyToOne
-    private Form form;
+    private Admin admin;
+
+    private Date dateCreated;
 
     @ManyToOne
     private Response response;
 
-    //SignUp Log Constructor
     public Log(String logType, Applicant applicant, Date dateCreated) {
         this.logType = logType;
         this.applicant = applicant;
         this.dateCreated = dateCreated;
     }
 
-    //Apply Log Constructor
-    public Log(String logType, Applicant applicant, Form form, Date dateCreated) {
-        this.logType = logType;
-        this.applicant = applicant;
-        this.form = form;
-        this.dateCreated = dateCreated;
-    }
-
-    //Response Log Constructor
-    public Log(String logType, Applicant applicant, Response form, Date dateCreated) {
+    public Log(String logType, Applicant applicant, Response response, Date dateCreated) {
         this.logType = logType;
         this.applicant = applicant;
         this.response = response;

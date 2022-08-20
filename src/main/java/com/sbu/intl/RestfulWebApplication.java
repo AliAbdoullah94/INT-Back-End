@@ -1,12 +1,7 @@
 package com.sbu.intl;
 
-import com.sbu.intl.model.Applicant;
-import com.sbu.intl.model.Form;
-import com.sbu.intl.service.ApplicantRepository;
-import com.sbu.intl.service.FormRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 public class RestfulWebApplication {

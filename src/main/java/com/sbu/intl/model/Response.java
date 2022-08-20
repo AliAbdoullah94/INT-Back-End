@@ -21,8 +21,6 @@ public class Response {
     private Long id;
 
     @OneToOne
-    private Form onForm;
-    @OneToOne
     private Applicant applicant;
     private boolean accepted;
     private String responseText;

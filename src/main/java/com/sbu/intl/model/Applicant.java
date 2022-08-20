@@ -1,5 +1,6 @@
 package com.sbu.intl.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sbu.intl.converters.ListToStringConverter;
 import lombok.*;
@@ -31,8 +32,11 @@ public class Applicant {
     private String lastName;
 
 
+    private Date dateApplied;
+
     @OneToOne
-    private Form form;
+    @JsonIgnore
+    private Response response;
     //Personal Info
     private Date birth;
     private String nationality;
@@ -84,6 +88,8 @@ public class Applicant {
     }
 
     public void update(Applicant applicant) throws JsonProcessingException {
+        this.setDateApplied(applicant.getDateApplied());
+
         this.setBirth(applicant.getBirth());
         this.setGender(applicant.getGender());
         this.setNationality(applicant.getNationality());
@@ -124,9 +130,9 @@ public class Applicant {
         return wishes;
     }
 
-    public Applicant(String email, String password, String firstName, String lastName, Form form, Date birth, String gender, String nationality, String degree, String applyFor, String job, String aboutApplicant) {
+    public Applicant(String email, String password, String firstName, String lastName, Response response, Date birth, String gender, String nationality, String degree, String applyFor, String job, String aboutApplicant) {
         this(email, password, firstName, lastName);
-        this.form = form;
+        this.response = response;
         this.birth = birth;
         this.gender = gender;
         this.nationality = nationality;

@@ -1,11 +1,9 @@
 package com.sbu.intl.contoller;
 
 import com.sbu.intl.model.Applicant;
-import com.sbu.intl.model.Form;
 import com.sbu.intl.model.Log;
 import com.sbu.intl.model.Response;
 import com.sbu.intl.service.ApplicantRepository;
-import com.sbu.intl.service.FormRepository;
 import com.sbu.intl.service.LogRepository;
 import com.sbu.intl.service.ResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,23 +22,15 @@ public class LogController {
     @Autowired
     private ApplicantRepository applicantRepository;
 
-    @Autowired
-    private FormRepository formRepository;
 
     @Autowired
     private ResponseRepository responseRepository;
     
     @PostMapping(path = "/logs/{type}")
     public ResponseEntity<Void> addLog(@RequestBody Log log, @PathVariable("type") String type) {
-        if (type.equals("signUp")){
+        if (type.equals("signUp") || type.equals("apply")){
             Applicant applicant = applicantRepository.findByEmail(log.getApplicant().getEmail());
             Log logEntity = new Log(log.getLogType(),applicant,log.getDateCreated());
-            logRepository.save(logEntity);
-        }
-        else if (type.equals("apply")){
-            Applicant applicant = applicantRepository.findByEmail(log.getApplicant().getEmail());
-            Form form = formRepository.findByApplicant(applicant);
-            Log logEntity = new Log(log.getLogType(),applicant,form,log.getDateCreated());
             logRepository.save(logEntity);
         }
         // response

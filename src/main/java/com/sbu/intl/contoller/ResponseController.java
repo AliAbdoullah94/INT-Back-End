@@ -1,10 +1,8 @@
 package com.sbu.intl.contoller;
 
 import com.sbu.intl.model.Applicant;
-import com.sbu.intl.model.Form;
 import com.sbu.intl.model.Response;
 import com.sbu.intl.service.ApplicantRepository;
-import com.sbu.intl.service.FormRepository;
 import com.sbu.intl.service.ResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,19 +21,20 @@ public class ResponseController {
     @Autowired
     private ApplicantRepository applicantRepository;
 
-    @Autowired
-    private FormRepository formRepository;
 
     @PostMapping(path="/responses/{applicantEmail}")
     public ResponseEntity<Void> addResponse(@RequestBody Response response, @PathVariable("applicantEmail") String applicantEmail) {
         Applicant applicant = applicantRepository.findByEmail(applicantEmail);
-        Form retrievedForm = formRepository.findByApplicant(applicant);
 //        Optional<Response> retrievedResponse = Optional.ofNullable(responseRepository.findByApplicant(applicant));
 //        if (retrievedResponse.isPresent())
 //            responseRepository.save(response);
+        if(applicant.getResponse() != null){
+            throw new IllegalArgumentException("applicant alre");
+        }
+        applicant.setResponse(response);
         response.setApplicant(applicant);
-        response.setOnForm(retrievedForm);
         responseRepository.save(response);
+        applicantRepository.save(applicant);
         return ResponseEntity.noContent().build();
     }
 
