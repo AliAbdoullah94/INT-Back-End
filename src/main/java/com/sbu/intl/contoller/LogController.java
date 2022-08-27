@@ -22,7 +22,6 @@ public class LogController {
     @Autowired
     private ApplicantRepository applicantRepository;
 
-
     @Autowired
     private ResponseRepository responseRepository;
     
@@ -33,8 +32,11 @@ public class LogController {
             Log logEntity = new Log(log.getLogType(),applicant,log.getDateCreated());
             logRepository.save(logEntity);
         }
-        // response
-        else {
+        else if (type.equals("add Course") || type.equals("add Grades")) {
+            Log logEntity = new Log(log.getLogType(),log.getDateCreated());
+            logRepository.save(logEntity);
+        }
+        else { // Response
             Applicant applicant = applicantRepository.findByEmail(type);
             Response response = responseRepository.findByApplicant(applicant);
             Log logEntity = new Log(log.getLogType(),applicant,response,log.getDateCreated());

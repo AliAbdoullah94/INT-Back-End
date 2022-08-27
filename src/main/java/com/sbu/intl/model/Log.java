@@ -25,9 +25,6 @@ public class Log {
     @ManyToOne
     private Applicant applicant;
 
-    @ManyToOne
-    private Admin admin;
-
     private Date dateCreated;
 
     @ManyToOne
@@ -46,6 +43,10 @@ public class Log {
         this.dateCreated = dateCreated;
     }
 
+    public Log(String logType, Date dateCreated) {
+        this.logType = logType;
+        this.dateCreated = dateCreated;
+    }
 
     @Override
     public boolean equals(Object o) {

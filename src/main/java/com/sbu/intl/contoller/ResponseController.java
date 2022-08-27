@@ -61,9 +61,26 @@ public class ResponseController {
         return responseRepository.findAll();
     }
 
-    @GetMapping(path="/responses/{id}")
-    public Optional<Response> getResponse(@PathVariable("id") Long id) {
-        return responseRepository.findById(id);
+    @GetMapping(path="/responses/{applicantEmail}")
+    public Optional<Response> getResponse(@PathVariable("applicantEmail") String applicantEmail) {
+        if (isNumeric(applicantEmail)) { // responseID
+            long id = Long.parseLong(applicantEmail);
+            return responseRepository.findById(id);
+        }
+        Applicant applicant = applicantRepository.findByEmail(applicantEmail);
+        return Optional.ofNullable(responseRepository.findByApplicant(applicant));
+    }
+
+    private static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            int id = Integer.parseInt(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
 }
